@@ -14,7 +14,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  * 
- * @Author: Arturo Beltran
  */
 package edu.usc.sunset.burgess.tika;
 
@@ -39,10 +38,12 @@ import org.xml.sax.SAXException;
 
 public class EnviHeaderParser extends AbstractParser 
 {
+        public static final String ENVI_MIME_TYPE = 
+        	"application/envi.hdr";  
+        	
         private static final Set<MediaType> SUPPORTED_TYPES = 
         	Collections.singleton(MediaType.application("envi.hdr"));
-        public static final String HELLO_MIME_TYPE = 
-        	"application/envi.hdr";       
+      
         
         public Set<MediaType> getSupportedTypes(ParseContext context) {
             return SUPPORTED_TYPES;
@@ -53,7 +54,7 @@ public class EnviHeaderParser extends AbstractParser
 						throws IOException, SAXException, TikaException {
                         
                 //Only outputting the MIME type as metadata
-                  metadata.set(Metadata.CONTENT_TYPE, HELLO_MIME_TYPE);
+                  metadata.set(Metadata.CONTENT_TYPE, ENVI_MIME_TYPE);
                		
                 // The following code was taken from the TXTParser
                 // Automatically detect the character encoding
@@ -62,7 +63,7 @@ public class EnviHeaderParser extends AbstractParser
         				
         		   try {
             			Charset charset = reader.getCharset();
-            			MediaType type = new MediaType(MediaType.TEXT_PLAIN, charset);
+            			MediaType type = new MediaType(ENVI_MIME_TYPE, charset);
             			// deprecated, see TIKA-431
             			metadata.set(Metadata.CONTENT_ENCODING, charset.name());
 
