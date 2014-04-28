@@ -62,14 +62,14 @@ public class EnviHeaderParser extends AbstractParser
         				
         		   try {
             			Charset charset = reader.getCharset();
-            			MediaType type = new MediaType(MediaType.TEXT_PLAIN, charset);
+            			MediaType type = new MediaType(ENVI_MIME_TYPE, charset);
             			// deprecated, see TIKA-431
             			metadata.set(Metadata.CONTENT_ENCODING, charset.name());
 
             			XHTMLContentHandler xhtml = new XHTMLContentHandler(handler, metadata);
             
             			xhtml.startDocument();
-							
+
 							//text contents of the xhtml
             				xhtml.startElement("p");
             				char[] buffer = new char[4096];
