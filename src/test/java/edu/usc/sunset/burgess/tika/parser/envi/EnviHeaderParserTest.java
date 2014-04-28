@@ -20,26 +20,22 @@ package edu.usc.sunset.burgess.tika.parser.envi;
 //JDK imports
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import org.junit.Test;
 
-import java.io.InputStream;
-
-//TIKA imports
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.metadata.TikaCoreProperties;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.Parser;
 import org.apache.tika.sax.BodyContentHandler;
-import org.junit.Test;
 import org.xml.sax.ContentHandler;
 import java.io.IOException;
+import java.io.InputStream;
 /*
  * Test cases to exercise the {@link EnviHeaderParser}.
  * 
  */
 public class EnviHeaderParserTest
 {
-	public static final String TEST_STRING = "{GEO-TIFF File Imported into ENVI [Fri May 25 14:06:23 2012]}";
-
     @Test
     public void testParseGlobalMetadata() throws Exception {
         if(System.getProperty("java.version").startsWith("1.5")) {
@@ -57,10 +53,16 @@ public class EnviHeaderParserTest
         } finally {
             stream.close();
         }
-		// Check text
+
+		// Check content of test file
        	String content = handler.toString();
-       	assertTrue(content.contains(TEST_STRING));
-
+       	assertTrue(content.contains("ENVI"));
+       	assertTrue(content.contains("samples = 2400"));
+       	assertTrue(content.contains("lines   = 2400"));
+       	assertTrue(content.contains("bands   = 7"));
+       	assertTrue(content.contains("header offset = 0"));
+       	assertTrue(content.contains("file type = ENVI Standard"));
+       	assertTrue(content.
+       	contains("projection info = {16, 6371007.2, 0.000000, 0.0, 0.0, Sinusoidal, units=Meters}"))       
     }
-
 }
