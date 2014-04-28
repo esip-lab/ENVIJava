@@ -63,7 +63,7 @@ public class EnviHeaderParser extends AbstractParser
         				
         		   try {
             			Charset charset = reader.getCharset();
-            			MediaType type = new MediaType(ENVI_MIME_TYPE, charset);
+            			MediaType type = new MediaType(MediaType.TEXT_PLAIN, charset);
             			// deprecated, see TIKA-431
             			metadata.set(Metadata.CONTENT_ENCODING, charset.name());
 
