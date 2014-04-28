@@ -1,0 +1,5 @@
+ENVI header tools for Tika
+Copyright 2014 Annie Bryant Burgess
+
+The Apache Tika Plugin includes developed at
+The Apache Software Foundation (http://www.apache.org/).
