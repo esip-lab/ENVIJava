@@ -19,6 +19,7 @@ package edu.usc.sunset.burgess.tika;
 
 //JDK imports
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -48,6 +49,7 @@ public class EnviHeaderParserTest
 
         InputStream stream = EnviHeaderParser.class
                 .getResourceAsStream("/test-documents/envi_test_header.hdr");
+        assertNotNull("Test ENVI file not found", stream);
         try {
             parser.parse(stream, handler, metadata, new ParseContext());
         } finally {
