@@ -1,0 +1,21 @@
+# Lines that start with '#' are comments.
+
+# Ignore class files
+*.class
+# Ignore vim swp files
+.*.swp
+
+# Everyone wants their own Eclipse setup
+.project
+.classpath
+.settings/
+
+# Skip the build directories
+/target/
+
+# Skip where we put test files not cleared for inclusion
+/DO_NOT_COMMIT/
+
+# Skip the eclipse static includes
+/lib/
+/bin

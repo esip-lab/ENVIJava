@@ -15,10 +15,11 @@
  * limitations under the License.
 */
 
-package edu.usc.sunset.burgess.tika.parser.envi;
+package edu.usc.sunset.burgess.tika;
 
 //JDK imports
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
@@ -41,28 +42,29 @@ public class EnviHeaderParserTest
         if(System.getProperty("java.version").startsWith("1.5")) {
             return;
         }
-        
+
         Parser parser = new EnviHeaderParser();
         ContentHandler handler = new BodyContentHandler();
         Metadata metadata = new Metadata();
-        
+
         InputStream stream = EnviHeaderParser.class
                 .getResourceAsStream("/test-documents/envi_test_header.hdr");
+        assertNotNull("Test ENVI file not found", stream);
         try {
             parser.parse(stream, handler, metadata, new ParseContext());
         } finally {
             stream.close();
         }
 
-		// Check content of test file
-       	String content = handler.toString();
-       	assertTrue(content.contains("ENVI"));
-       	assertTrue(content.contains("samples = 2400"));
-       	assertTrue(content.contains("lines   = 2400"));
-       	assertTrue(content.contains("bands   = 7"));
-       	assertTrue(content.contains("header offset = 0"));
-       	assertTrue(content.contains("file type = ENVI Standard"));
-       	assertTrue(content.
-       	contains("projection info = {16, 6371007.2, 0.000000, 0.0, 0.0, Sinusoidal, units=Meters}"))       
+        // Check content of test file
+        String content = handler.toString();
+        assertTrue(content.contains("ENVI"));
+        assertTrue(content.contains("samples = 2400"));
+        assertTrue(content.contains("lines   = 2400"));
+        assertTrue(content.contains("bands   = 7"));
+        assertTrue(content.contains("header offset = 0"));
+        assertTrue(content.contains("file type = ENVI Standard"));
+        assertTrue(content.
+        contains("projection info = {16, 6371007.2, 0.000000, 0.0, 0.0, Sinusoidal, units=Meters}"));
     }
 }

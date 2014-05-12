@@ -38,54 +38,54 @@ import org.xml.sax.SAXException;
 
 public class EnviHeaderParser extends AbstractParser 
 {
-        public static final String ENVI_MIME_TYPE = 
-        	"application/envi.hdr";  
-        	
-        private static final Set<MediaType> SUPPORTED_TYPES = 
-        	Collections.singleton(MediaType.application("envi.hdr"));
-      
-        
-        public Set<MediaType> getSupportedTypes(ParseContext context) {
-            return SUPPORTED_TYPES;
+    public static final String ENVI_MIME_TYPE = 
+            "application/envi.hdr";  
+
+    private static final Set<MediaType> SUPPORTED_TYPES = 
+            Collections.singleton(MediaType.application("envi.hdr"));
+
+
+    public Set<MediaType> getSupportedTypes(ParseContext context) {
+        return SUPPORTED_TYPES;
+    }
+
+    public void parse(InputStream stream, ContentHandler handler, 
+            Metadata metadata, ParseContext context)
+                    throws IOException, SAXException, TikaException {
+
+        //Only outputting the MIME type as metadata
+        metadata.set(Metadata.CONTENT_TYPE, ENVI_MIME_TYPE);
+
+        // The following code was taken from the TXTParser
+        // Automatically detect the character encoding
+        AutoDetectReader reader = 
+                new AutoDetectReader(new CloseShieldInputStream(stream), metadata);
+
+        try {
+            Charset charset = reader.getCharset();
+            MediaType type = new MediaType(MediaType.TEXT_PLAIN, charset);
+            // deprecated, see TIKA-431
+            metadata.set(Metadata.CONTENT_ENCODING, charset.name());
+
+            XHTMLContentHandler xhtml = new XHTMLContentHandler(handler, metadata);
+
+            xhtml.startDocument();
+
+            //text contents of the xhtml
+            xhtml.startElement("p");
+            char[] buffer = new char[4096];
+            int n = reader.read(buffer);
+            while (n != -1) {
+                xhtml.characters(buffer, 0, n);
+                n = reader.read(buffer);
+            }
+            xhtml.endElement("p");
+
+            xhtml.endDocument();
+        } 		
+        finally{
+            reader.close();
         }
 
-        public void parse(InputStream stream, ContentHandler handler, 
-        				Metadata metadata, ParseContext context)
-						throws IOException, SAXException, TikaException {
-                        
-                //Only outputting the MIME type as metadata
-                  metadata.set(Metadata.CONTENT_TYPE, ENVI_MIME_TYPE);
-               		
-                // The following code was taken from the TXTParser
-                // Automatically detect the character encoding
-        		   AutoDetectReader reader = 
-        		   	   new AutoDetectReader(new CloseShieldInputStream(stream), metadata);
-        				
-        		   try {
-            			Charset charset = reader.getCharset();
-            			MediaType type = new MediaType(MediaType.TEXT_PLAIN, charset);
-            			// deprecated, see TIKA-431
-            			metadata.set(Metadata.CONTENT_ENCODING, charset.name());
-
-            			XHTMLContentHandler xhtml = new XHTMLContentHandler(handler, metadata);
-            
-            			xhtml.startDocument();
-
-							//text contents of the xhtml
-            				xhtml.startElement("p");
-            				char[] buffer = new char[4096];
-            				int n = reader.read(buffer);
-            				while (n != -1) {
-                			xhtml.characters(buffer, 0, n);
-                			n = reader.read(buffer);
-            				}
-            				xhtml.endElement("p");
-
-            			xhtml.endDocument();
-        				} 		
-        				finally{
-            				reader.close();
-        				}
-
-        }
+    }
 }
